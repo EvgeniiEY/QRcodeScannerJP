@@ -1,6 +1,7 @@
 package com.example.qrcodescannerjp
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.example.qrcodescannerjp.ui.theme.QRcodeScannerJPTheme
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import com.parse.ParseObject
 
 class MainActivity : ComponentActivity() {
     private val scanLauncher = registerForActivityResult(
@@ -18,7 +20,16 @@ class MainActivity : ComponentActivity() {
     ) { result ->
         if (result.contents == null) {
         } else {
-            Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
+            val secondObject = ParseObject("FirstClass")
+            secondObject.put("message","${result.contents}")
+            secondObject.saveInBackground {
+                if (it != null){
+                    it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
+                }else{
+                    Log.d("MainActivity","Object saved.")
+                }
+            }
         }
     }
 
@@ -31,14 +42,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Button(onClick = {
+                    Button(
+                        onClick = {
                         scan()
                     }) {
-                        Text(text = "Scan")
+                        Text(text = "СКАН")
                     }
                 }
             }
         }
+        val firstObject = ParseObject("FirstClass")
+        firstObject.put("message","Hey ! First message from android. Parse is now connected")
+        firstObject.saveInBackground {
+            if (it != null){
+                it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
+            }else{
+                Log.d("MainActivity","Object saved.")
+            }
+        }
+
+
     }
 
     private fun scan() {
@@ -51,6 +74,21 @@ class MainActivity : ComponentActivity() {
         scanLauncher.launch(options)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //        setContent {

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">QRcodeScannerJP</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Paste BOTH strings as required -->
+    <string name="back4app_app_id">pDOWBbm0HqmyRfAtgoHiiLn1kPKJCfQ2LcYVVgNF</string>
+    <string name="back4app_client_key">lTDu8BWB3iH8wroHwsKBwgt0lOhTMSA3g184BGvO</string>
 </resources>
