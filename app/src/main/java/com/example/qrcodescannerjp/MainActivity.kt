@@ -66,18 +66,19 @@ class MainActivity : ComponentActivity() {
 
             val query = ParseQuery.getQuery<ParseObject>("FirstClass")
 
-            query.getInBackground("783WeFkftA") { Message, e ->
+            query.getInBackground(
+                "NpiB98yZz0"
+            ) { alarm, e ->
                 if (e == null) {
-                    Message.put("Message", "ЖОПА ХУЙ ЕБЛО !!! ")
 
-                    Message.saveInBackground()
+                    alarm.put("Alarm", true)
+                    alarm.saveInBackground()
                 }
             }
-
         }
     }
 
-            override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -172,4 +173,24 @@ class MainActivity : ComponentActivity() {
 //        }
 //    }
 
+
+//private val scanFinder = registerForActivityResult(
+//    ScanContract()
+//) { result ->
+//    if (result.contents == null) {
+//    } else {
+//        Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
+//
+//        val query = ParseQuery.getQuery<ParseObject>("FirstClass")
+//
+//        query.getInBackground("783WeFkftA") { Message, e ->
+//            if (e == null) {
+//                Message.put("Message", "ЖОПА ХУЙ ЕБЛО !!! ")
+//
+//                Message.saveInBackground()
+//            }
+//        }
+//
+//    }
+//}
 
