@@ -48,16 +48,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    private val scanAlarm = doQueryAlarm(
-//        val query = ParseQuery<Parse>
-//
-//        ScanContract()
-//    ) { result ->
-//        if (result.contents == null) {
-//        } else {
-//
-//        }
-    // find number query
 
     private val scanFinder = registerForActivityResult(
         ScanContract()
@@ -66,16 +56,7 @@ class MainActivity : ComponentActivity() {
         } else {
             Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
 
-            val query = ParseQuery.getQuery<ParseObject>("FirstClass")
-            query.whereExists("999999")
-            query.findInBackground(FindCallback<ParseObject?> { scoreList, e ->
-                if (e == null) {
-                    doQueryByDKSId()
-                    Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
-                } else {
-//                    Log.d("score", "Error: " + e.getMessage())
-                }
-            })
+                        doQueryByDKSId()
 
         }
     }
