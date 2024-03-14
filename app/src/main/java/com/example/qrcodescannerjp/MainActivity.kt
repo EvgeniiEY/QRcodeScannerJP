@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.sp
 import com.example.qrcodescannerjp.ui.theme.QRcodeScannerJPTheme
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import com.parse.FindCallback
+import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
 
@@ -65,16 +67,16 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
 
             val query = ParseQuery.getQuery<ParseObject>("FirstClass")
-
-            query.getInBackground(
-                "NpiB98yZz0"
-            ) { alarm, e ->
+            query.whereExists("999999")
+            query.findInBackground(FindCallback<ParseObject?> { scoreList, e ->
                 if (e == null) {
-
-                    alarm.put("Alarm", true)
-                    alarm.saveInBackground()
+                    doQueryByDKSId()
+                    Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
+                } else {
+//                    Log.d("score", "Error: " + e.getMessage())
                 }
-            }
+            })
+
         }
     }
 
@@ -165,13 +167,12 @@ class MainActivity : ComponentActivity() {
         scanFinder.launch(options)
     }
 }
-//        private fun doQueryAlarm() {
-//            val query = ParseQuery<ParseObject>("FirstClass")
-//            query.whereContains("DKSId", "3")
-//            val result = ParseObject("FirstClass")
-//            result.put("Alarm", "true")
-//        }
-//    }
+
+    private fun doQueryByDKSId() {
+        QueryRetrievers.findAndChange()
+
+}
+
 
 
 //private val scanFinder = registerForActivityResult(
