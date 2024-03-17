@@ -18,10 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.qrcodescannerjp.ui.theme.QRcodeScannerJPTheme
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import com.parse.FindCallback
-import com.parse.ParseException
 import com.parse.ParseObject
-import com.parse.ParseQuery
 
 
 class MainActivity : ComponentActivity() {
@@ -37,8 +34,15 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
 
             val secondObject = ParseObject("FirstClass")
-            secondObject.put("message", "${result.contents}")
-            secondObject.put("DKSId", "${dksid}")
+            val qrArray = result.contents.split("_").toTypedArray()
+
+
+            secondObject.put("Mark", qrArray[0])
+            secondObject.put("DKSId", qrArray[1].toInt())
+            secondObject.put("SupportId", qrArray[2].toInt())
+            secondObject.put("Manufacture", qrArray[3])
+            secondObject.put("DateProduced", qrArray[4])
+
             secondObject.saveInBackground {
                 if (it != null) {
                     it.localizedMessage?.let { message -> Log.e("MainActivity", message) }

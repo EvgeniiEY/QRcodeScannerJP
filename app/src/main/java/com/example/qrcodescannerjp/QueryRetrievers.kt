@@ -34,21 +34,21 @@ class QueryRetrievers {
 //                }
 //            }
 //        }
-
+//функция установки статуса Авария true
         fun findAndChange(resultAfterScan: String) {
             // Replace with your actual class name used in Parse
             val className = "FirstClass"
 
 // Assuming "name" is the field containing the object's name
 // and "isAvailable" is the boolean attribute you want to update
-            val objectIdToFind = resultAfterScan
+            val objectIdToFind = resultAfterScan.split("_").toTypedArray()
             val newAlarmStatus = true
 
 // Create a query for the Parse class
             val query = ParseQuery.getQuery<ParseObject>(className)
 
 // Query for objects with the specific name
-            query.whereEqualTo("DKSId", objectIdToFind)
+            query.whereEqualTo("DKSId", objectIdToFind[1].toInt())
             query.getFirstInBackground { parseObject, e ->
                 if (e == null) {
                     // Object was successfully retrieved
