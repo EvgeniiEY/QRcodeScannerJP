@@ -26,6 +26,7 @@ import com.parse.ParseQuery
 
 class MainActivity : ComponentActivity() {
     private var dksid = 0
+    lateinit var resultAfterScan: String
 
     //put qr in base function
     private val scanLauncher = registerForActivityResult(
@@ -55,8 +56,10 @@ class MainActivity : ComponentActivity() {
         if (result.contents == null) {
         } else {
             Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
+                resultAfterScan = result.contents
+        //Передаю строку в ф-ю
 
-                        doQueryByDKSId()
+            QueryRetrievers.findAndChange(resultAfterScan)
 
         }
     }
@@ -147,11 +150,6 @@ class MainActivity : ComponentActivity() {
         options.setBarcodeImageEnabled(true)
         scanFinder.launch(options)
     }
-}
-
-    private fun doQueryByDKSId() {
-        QueryRetrievers.findAndChange()
-
 }
 
 
