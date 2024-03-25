@@ -1,6 +1,13 @@
 package com.example.qrcodescannerjp
 
+import android.graphics.Color
+import android.graphics.drawable.shapes.Shape
 import android.util.Log
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.contentColorFor
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.DialogProperties
 import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
@@ -22,7 +29,7 @@ class QueryRetrievers {
 //            }
 //        }
 
-//        fun queryEqualTo() {
+        //        fun queryEqualTo() {
 //            val query = ParseQuery<ParseObject>("FirstClass")
 //            query.whereEqualTo("DKSId", 999999)
 //            query.findInBackground { objects: List<ParseObject>, e: ParseException? ->
@@ -34,13 +41,10 @@ class QueryRetrievers {
 //                }
 //            }
 //        }
-//функция установки статуса Авария true
+//функция установки статуса Авария на true
         fun findAndChange(resultAfterScan: String) {
             // Replace with your actual class name used in Parse
             val className = "FirstClass"
-
-// Assuming "name" is the field containing the object's name
-// and "isAvailable" is the boolean attribute you want to update
             val objectIdToFind = resultAfterScan.split("_").toTypedArray()
             val newAlarmStatus = true
 
@@ -70,8 +74,35 @@ class QueryRetrievers {
                     Log.d("ParseQuery", "Error retrieving object: " + e.message)
                 }
             }
-
         }
+
+        fun findDuplicate(resultAfterScan: String): Boolean {
+            val className = "FirstClass"
+            val query = ParseQuery.getQuery<ParseObject>(className)
+            val objectIdToFind = resultAfterScan.split("_").toTypedArray()
+            val dksId = objectIdToFind[1].toInt()
+            query.whereEqualTo("DKSId", dksId)
+            query.getFirstInBackground { parseObject, e ->
+                if (parseObject != null) {
+                    // The element with the specific DKSId exists
+                    Log.d("ParseQuery", "The element is already in the database")
+                } else {
+                    if (e.code == ParseException.OBJECT_NOT_FOUND) {
+                        // The element with the specific DKSId does not exist
+                        Log.d("ParseQuery", "The element is not in the database")
+
+                    } else {
+                        // A different error occurred
+                        Log.e("ParseQuery", "Error: " + e.message)
+                    }
+                }
+            }
+            return true
+        }
+
+
+
+
 
 
     }

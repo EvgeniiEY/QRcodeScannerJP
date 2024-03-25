@@ -1,5 +1,6 @@
 package com.example.qrcodescannerjp
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.sp
 import com.example.qrcodescannerjp.ui.theme.QRcodeScannerJPTheme
 import com.journeyapps.barcodescanner.ScanContract
@@ -35,7 +39,8 @@ class MainActivity : ComponentActivity() {
 
             val secondObject = ParseObject("FirstClass")
             val qrArray = result.contents.split("_").toTypedArray()
-
+            resultAfterScan = result.contents
+            QueryRetrievers.findDuplicate(resultAfterScan)
 
             secondObject.put("Mark", qrArray[0])
             secondObject.put("DKSId", qrArray[1].toInt())
@@ -154,7 +159,30 @@ class MainActivity : ComponentActivity() {
         options.setBarcodeImageEnabled(true)
         scanFinder.launch(options)
     }
+    @Composable
+    fun MinimalDialog(onDismissRequest: () -> Unit) {
+        Dialog(onDismissRequest = { onDismissRequest() }) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Text(
+                    text = "This is a minimal dialog",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    }
+
 }
+
+
 
 
 
