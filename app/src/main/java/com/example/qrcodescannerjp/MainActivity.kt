@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +29,7 @@ import com.parse.ParseObject
 class MainActivity : ComponentActivity() {
     private var dksid = 0
     lateinit var resultAfterScan: String
-
+    private val viewModel by viewModels<MainViewModel>()
     //put qr in base function
     private val scanLauncher = registerForActivityResult(
         ScanContract()
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
             val secondObject = ParseObject("FirstClass")
             val qrArray = result.contents.split("_").toTypedArray()
             resultAfterScan = result.contents
-            QueryRetrievers.findDuplicate(resultAfterScan)
+            findDuplicate(result.contents)
 
             secondObject.put("Mark", qrArray[0])
             secondObject.put("DKSId", qrArray[1].toInt())
@@ -68,7 +69,7 @@ class MainActivity : ComponentActivity() {
                 resultAfterScan = result.contents
         //Передаю строку в ф-ю
 
-            QueryRetrievers.findAndChange(resultAfterScan)
+            findAndChange(resultAfterScan = resultAfterScan)
 
         }
     }
@@ -158,26 +159,6 @@ class MainActivity : ComponentActivity() {
         options.setBeepEnabled(true)
         options.setBarcodeImageEnabled(true)
         scanFinder.launch(options)
-    }
-    @Composable
-    fun MinimalDialog(onDismissRequest: () -> Unit) {
-        Dialog(onDismissRequest = { onDismissRequest() }) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(
-                    text = "This is a minimal dialog",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center),
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 
 }

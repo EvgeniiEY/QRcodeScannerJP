@@ -45,3 +45,4 @@ fun QRcodeScannerJPTheme(
         content = content
     )
 }
+
