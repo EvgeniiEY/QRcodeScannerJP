@@ -3,10 +3,19 @@ package com.example.qrcodescannerjp
 import android.graphics.Color
 import android.graphics.drawable.shapes.Shape
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.parse.ParseException
 import com.parse.ParseObject
@@ -76,7 +85,7 @@ import com.parse.ParseQuery
     }
 
 
-    fun findDuplicate(resultAfterScan: String): Boolean {
+    fun findDuplicate(resultAfterScan: String): String {
         val className = "FirstClass"
         val query = ParseQuery.getQuery<ParseObject>(className)
         val objectIdToFind = resultAfterScan.split("_").toTypedArray()
@@ -86,6 +95,7 @@ import com.parse.ParseQuery
             if (parseObject != null) {
                 // The element with the specific DKSId exists
                 Log.d("MyLog", "QR-код $resultAfterScan УЖЕ ЕСТЬ В БАЗЕ!")
+
                 //todo: сослаться на результат ф-ии Custom Dialog
             } else {
                 if (e.code == ParseException.OBJECT_NOT_FOUND) {
@@ -98,8 +108,29 @@ import com.parse.ParseQuery
                 }
             }
         }
-        return true
+        return "QR-код $resultAfterScan УЖЕ ЕСТЬ В БАЗЕ!"
     }
+
+//@Composable
+//fun MinimalDialog(onDismissRequest: () -> Unit) {
+//    Dialog(onDismissRequest = { onDismissRequest() }) {
+//        Card(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(200.dp)
+//                .padding(16.dp),
+//            shape = RoundedCornerShape(16.dp),
+//        ) {
+//            Text(
+//                text = "This is a minimal dialog",
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .wrapContentSize(Alignment.Center),
+//                textAlign = TextAlign.Center,
+//            )
+//        }
+//    }
+//}
 
 
 //    @Composable
