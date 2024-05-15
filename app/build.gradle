@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
 }
 
 android {
@@ -63,4 +64,8 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
     implementation "com.github.parse-community.Parse-SDK-Android:parse:1.26.0"
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.0")
+
 }

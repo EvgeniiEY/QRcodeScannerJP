@@ -1,21 +1,34 @@
 package com.example.qrcodescannerjp
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.parse.ParseObject
+import com.parse.ParseQuery
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
+    private val _supportIdRows = MutableLiveData<List<String>>()
+    val supportIdRows: LiveData<List<String>>
+        get() = _supportIdRows
 
-    var isDialogShown by mutableStateOf(false)
-        private set
-
-    fun onConfirmClick(){
-        isDialogShown = true
+    fun fetchRowsBySupportId(supportId: Int) {
+        val query = ParseQuery.getQuery<ParseObject>("FirstClass")
+        query.whereEqualTo("SupportId", supportId)
+        query.findInBackground { objects, e ->
+            if (e == null) {
+                val rowsAsString = objects.map { parseObject ->
+                    // Convert ParseObject to a concatenated string
+                    val builder = StringBuilder()
+                    parseObject.keySet().forEach { key ->
+                        builder.append(parseObject[key].toString()).append(" ")
+                    }
+                    builder.toString().trim()
+                }
+                _supportIdRows.postValue(rowsAsString)
+            } else {
+                // Handle the error, for example, logging or setting an error message
+                _supportIdRows.postValue(emptyList())
+            }
+        }
     }
-
-    fun onDismissDialog(){
-        isDialogShown = false
-    }
-
 }

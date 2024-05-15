@@ -1,26 +1,13 @@
 package com.example.qrcodescannerjp
 
-import android.graphics.Color
-import android.graphics.drawable.shapes.Shape
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
-
+import java.util.Date
 
 
 //        private const val TAG = "QueryRetrievers"
@@ -83,6 +70,9 @@ import com.parse.ParseQuery
             }
         }
     }
+
+
+
 
 
     fun findDuplicate(resultAfterScan: String): String {

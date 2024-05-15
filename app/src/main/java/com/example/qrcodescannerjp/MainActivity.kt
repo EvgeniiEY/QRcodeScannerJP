@@ -7,23 +7,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.qrcodescannerjp.ui.theme.QRcodeScannerJPTheme
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import com.parse.ParseObject
-import androidx.compose.ui.window.Dialog as Dialog
+
+
 
 
 class MainActivity : ComponentActivity() {
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
 
     //put qr in base function
-    private val scanLauncher = registerForActivityResult(
+    private val scanInLauncher = registerForActivityResult(
         ScanContract()
     ) { result ->
         if (result.contents == null) {
@@ -41,6 +41,7 @@ class MainActivity : ComponentActivity() {
 
             val secondObject = ParseObject("FirstClass")
             val qrArray = result.contents.split("_").toTypedArray()
+
             resultAfterScan = result.contents
             findDuplicate(resultAfterScan)
 
@@ -63,6 +64,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private val scanOutLauncher = registerForActivityResult(
+        ScanContract()
+    ) { result ->
+        if (result.contents == null) {
+        } else {
+            Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
+
+            val secondObject = ParseObject("FirstClass")
+            val qrArray = result.contents.split("_").toTypedArray()
+            val qrList = result.contents.split("_").toList()
+            var errorMessage = "ERROR in ScanOutLauncher!"
+            resultAfterScan = result.contents
+
+
+        }
+    }
+
+
 
     private val scanFinder = registerForActivityResult(
         ScanContract()
@@ -83,6 +102,8 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             QRcodeScannerJPTheme {
+
+
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceAround,
@@ -104,12 +125,17 @@ class MainActivity : ComponentActivity() {
 
                     Button(
                         onClick = {
-                            scan()
+                            scanOut()
+                            // TODO передать list и ResultSuccess
+
+
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Blue,
                             contentColor = Color.White
                         )
+
+
                     )
                     {
                         Text(text = "СКАН Запрос", fontSize = 20.sp)
@@ -117,7 +143,7 @@ class MainActivity : ComponentActivity() {
 
                     Button(
                         onClick = {
-                            scan()
+                            scanIn()
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Blue,
@@ -128,6 +154,12 @@ class MainActivity : ComponentActivity() {
                         Text(text = "СКАН Внести QR код в базу", fontSize = 20.sp)
                     }
                 }
+                Surface {
+                    val viewModel: MainViewModel = viewModel
+                    viewModel.fetchRowsBySupportId(123) // Fetch rows on creation
+                    SupportIdListScreen(viewModel)
+                }
+
             }
         }
 
@@ -144,16 +176,24 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun scan() {
+    private fun scanIn() {
         val options = ScanOptions()
         options.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
         options.setPrompt("Отсканируйте QR-код")
         options.setCameraId(0)
         options.setBeepEnabled(true)
         options.setBarcodeImageEnabled(true)
-        scanLauncher.launch(options)
+        scanInLauncher.launch(options)
+    }
 
-
+    private fun scanOut() {
+        val options = ScanOptions()
+        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+        options.setPrompt("Отсканируйте QR-код")
+        options.setCameraId(0)
+        options.setBeepEnabled(true)
+        options.setBarcodeImageEnabled(true)
+        scanOutLauncher.launch(options)
     }
 
     private fun scanAlarm() {
@@ -167,7 +207,12 @@ class MainActivity : ComponentActivity() {
     }
 
 
+
+
+
 }
+
+
 
 
 //private val scanFinder = registerForActivityResult(
