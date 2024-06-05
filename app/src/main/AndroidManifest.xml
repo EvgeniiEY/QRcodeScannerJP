@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".App"
@@ -17,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRcodeScannerJP"
         tools:targetApi="31">
+        <activity
+            android:name=".GroupIdResultActivity"
+            android:exported="false"
+            android:label="@string/title_activity_group_id_result"
+            android:theme="@style/Theme.QRcodeScannerJP" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
@@ -42,7 +46,6 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/back4app_client_key" />
-
     </application>
 
 </manifest>

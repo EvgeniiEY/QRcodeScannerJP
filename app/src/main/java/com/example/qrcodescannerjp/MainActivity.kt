@@ -1,5 +1,6 @@
 package com.example.qrcodescannerjp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -27,7 +28,7 @@ import com.parse.ParseObject
 
 
 class MainActivity : ComponentActivity() {
-    private var dksid = 0
+//    private var dksid = 0
     lateinit var resultAfterScan: String
     private val viewModel by viewModels<MainViewModel>()
 
@@ -47,6 +48,7 @@ class MainActivity : ComponentActivity() {
 
             Toast.makeText(this, findDuplicate(result.contents), Toast.LENGTH_LONG).show()
             //todo: return result as a dialog
+
 
             secondObject.put("Mark", qrArray[0])
             secondObject.put("DKSId", qrArray[1].toInt())
@@ -78,7 +80,9 @@ class MainActivity : ComponentActivity() {
             resultAfterScan = result.contents
 
 
+
         }
+
     }
 
 
@@ -127,8 +131,8 @@ class MainActivity : ComponentActivity() {
                         onClick = {
                             scanOut()
                             // TODO передать list и ResultSuccess
-
-
+                            val navigate = Intent(this@MainActivity, GroupIdResultActivity::class.java)
+                            startActivity(navigate)
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Blue,
@@ -137,8 +141,11 @@ class MainActivity : ComponentActivity() {
 
 
                     )
+
+
                     {
                         Text(text = "СКАН Запрос", fontSize = 20.sp)
+
                     }
 
                     Button(
@@ -154,13 +161,11 @@ class MainActivity : ComponentActivity() {
                         Text(text = "СКАН Внести QR код в базу", fontSize = 20.sp)
                     }
                 }
-                Surface {
-                    val viewModel: MainViewModel = viewModel
-                    viewModel.fetchRowsBySupportId(123) // Fetch rows on creation
-                    SupportIdListScreen(viewModel)
-                }
+
 
             }
+
+
         }
 
 

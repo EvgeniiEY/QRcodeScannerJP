@@ -127,17 +127,10 @@ fun CustomDialog(
         }
     }
 }
-@Composable
-fun SupportIdListScreen(viewModel: MainViewModel ) {
-    val supportIdRows by viewModel.supportIdRows.observeAsState(listOf())
 
-    LazyColumn(
-        Modifier.fillMaxSize()
-    ){
-        item { Text("Все ДКС группы:", fontSize = 29.sp) }
-        items(supportIdRows){lang -> Text(lang, fontSize = 24.sp)}
-    }
-}
+
+
+
 
 
 
