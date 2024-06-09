@@ -28,7 +28,10 @@ import com.parse.ParseObject
 
 class MainActivity : ComponentActivity() {
     //    private var dksid = 0
-    lateinit var resultAfterScan: String
+    lateinit var resultAfterScanIn: String
+    lateinit var resultAfterScanOut: String
+    lateinit var resultAfterScanAlarm: String
+
     private val viewModel by viewModels<MainViewModel>()
 
     //put qr in base function
@@ -42,8 +45,8 @@ class MainActivity : ComponentActivity() {
             val secondObject = ParseObject("FirstClass")
             val qrArray = result.contents.split("_").toTypedArray()
 
-            resultAfterScan = result.contents
-            findDuplicate(resultAfterScan)
+            resultAfterScanIn = result.contents
+            findDuplicate(resultAfterScanIn)
 
             Toast.makeText(this, findDuplicate(result.contents), Toast.LENGTH_LONG).show()
             //todo: return result as a dialog
@@ -77,11 +80,11 @@ class MainActivity : ComponentActivity() {
             val qrArray = result.contents.split("_").toTypedArray()
             val qrList = result.contents.split("_").toList()
             var errorMessage = "ERROR in ScanOutLauncher!"
-            resultAfterScan = groupNameFun(result.contents).toString()
+            resultAfterScanOut = groupNameFun(result.contents).toString()
 
         }
         val navigate = Intent(this@MainActivity, GroupIdResultActivity::class.java)
-            navigate.putExtra("result_after_scan", resultAfterScan)
+            navigate.putExtra("result_after_scan", resultAfterScanOut)
 
         startActivity(navigate)
     }
@@ -93,10 +96,10 @@ class MainActivity : ComponentActivity() {
         if (result.contents == null) {
         } else {
             Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
-            resultAfterScan = result.contents
+            resultAfterScanAlarm = result.contents
             //Передаю строку в ф-ю
 
-            findAndChange(resultAfterScan = resultAfterScan)
+            findAndChange(resultAfterScan = resultAfterScanAlarm)
 
         }
     }
