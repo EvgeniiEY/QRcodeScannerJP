@@ -77,11 +77,11 @@ class MainActivity : ComponentActivity() {
             val qrArray = result.contents.split("_").toTypedArray()
             val qrList = result.contents.split("_").toList()
             var errorMessage = "ERROR in ScanOutLauncher!"
-            resultAfterScan = result.contents
+            resultAfterScan = groupNameFun(result.contents).toString()
 
         }
         val navigate = Intent(this@MainActivity, GroupIdResultActivity::class.java)
-            navigate.putExtra("result_after_scan", groupNameFun(resultAfterScan))
+            navigate.putExtra("result_after_scan", resultAfterScan)
 
         startActivity(navigate)
     }

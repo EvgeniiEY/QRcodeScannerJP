@@ -24,7 +24,7 @@ class GroupIdResultActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         var intent = intent
-        val supportId = intent.getStringExtra("result_after_scan")
+        val supportId = intent.getStringExtra("result_after_scan")!!.toInt()
         setContent {
             Surface {
                 val viewModel: MainViewModel = viewModel

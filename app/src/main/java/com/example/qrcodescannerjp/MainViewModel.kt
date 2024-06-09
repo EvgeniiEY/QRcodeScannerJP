@@ -11,7 +11,7 @@ class MainViewModel : ViewModel() {
     val supportIdRows: LiveData<List<String>>
         get() = _supportIdRows
 //ф-я для каждого id ищет строку собирает её через пробел
-    fun fetchRowsBySupportId(supportId: String?) {
+    fun fetchRowsBySupportId(supportId: Int) {
         val query = ParseQuery.getQuery<ParseObject>("FirstClass")
         query.whereEqualTo("SupportId", supportId)
         query.findInBackground { objects, e ->
