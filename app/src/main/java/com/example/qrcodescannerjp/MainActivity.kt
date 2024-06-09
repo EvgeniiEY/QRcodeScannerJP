@@ -1,5 +1,6 @@
 package com.example.qrcodescannerjp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,10 +26,8 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.parse.ParseObject
 
 
-
-
 class MainActivity : ComponentActivity() {
-//    private var dksid = 0
+    //    private var dksid = 0
     lateinit var resultAfterScan: String
     private val viewModel by viewModels<MainViewModel>()
 
@@ -66,7 +65,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private val scanOutLauncher = registerForActivityResult(
+    @SuppressLint("SuspiciousIndentation")
+    val scanOutLauncher = registerForActivityResult(
         ScanContract()
     ) { result ->
         if (result.contents == null) {
@@ -79,12 +79,12 @@ class MainActivity : ComponentActivity() {
             var errorMessage = "ERROR in ScanOutLauncher!"
             resultAfterScan = result.contents
 
-
-
         }
+        val navigate = Intent(this@MainActivity, GroupIdResultActivity::class.java)
+            navigate.putExtra("result_after_scan", groupNameFun(resultAfterScan))
 
+        startActivity(navigate)
     }
-
 
 
     private val scanFinder = registerForActivityResult(
@@ -131,8 +131,8 @@ class MainActivity : ComponentActivity() {
                         onClick = {
                             scanOut()
                             // TODO передать list и ResultSuccess
-                            val navigate = Intent(this@MainActivity, GroupIdResultActivity::class.java)
-                            startActivity(navigate)
+
+
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Blue,
@@ -212,12 +212,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
-
-
 }
-
-
 
 
 //private val scanFinder = registerForActivityResult(

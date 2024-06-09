@@ -100,6 +100,34 @@ import java.util.Date
         }
         return "QR-код $resultAfterScan УЖЕ ЕСТЬ В БАЗЕ!"
     }
+//TODO дописать сюда ф-ю, которая сканирует qr и возвращает номер группы в виде int
+fun groupNameFun(resultAfterScan: String): Int {
+    val className = "FirstClass"
+    val query = ParseQuery.getQuery<ParseObject>(className)
+    val objectIdToFind = resultAfterScan.split("_").toTypedArray()
+    val supportId = objectIdToFind[2].toInt()
+    query.whereEqualTo("SupportId", supportId)
+    query.getFirstInBackground { parseObject, e ->
+        if (parseObject != null) {
+            // The element with the specific DKSId exists
+            Log.d("MyLog", "QR-код SupportId $resultAfterScan ЕСТЬ В БАЗЕ!")
+
+
+        } else {
+            if (e.code == ParseException.OBJECT_NOT_FOUND) {
+                // The element with the specific DKSId does not exist
+                Log.d("ParseQuery", "Элемент занесён!")
+
+            } else {
+                // A different error occurred
+                Log.e("MyLog", "Error: " + e.message)
+            }
+        }
+    }
+    return supportId
+}
+
+
 
 //@Composable
 //fun MinimalDialog(onDismissRequest: () -> Unit) {

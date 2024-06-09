@@ -10,8 +10,8 @@ class MainViewModel : ViewModel() {
     private val _supportIdRows = MutableLiveData<List<String>>()
     val supportIdRows: LiveData<List<String>>
         get() = _supportIdRows
-
-    fun fetchRowsBySupportId(supportId: Int) {
+//ф-я для каждого id ищет строку собирает её через пробел
+    fun fetchRowsBySupportId(supportId: String?) {
         val query = ParseQuery.getQuery<ParseObject>("FirstClass")
         query.whereEqualTo("SupportId", supportId)
         query.findInBackground { objects, e ->
