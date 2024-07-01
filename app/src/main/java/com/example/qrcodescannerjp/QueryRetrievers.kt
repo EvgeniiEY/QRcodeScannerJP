@@ -1,6 +1,7 @@
 package com.example.qrcodescannerjp
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -58,7 +59,7 @@ import java.util.Date
                 parseObject.saveInBackground { saveException ->
                     if (saveException == null) {
                         // The object was saved successfully
-                        Log.d("AlarmUpdate", "Alarm updated and saved successfully.")
+                        Log.d("AlarmUpdate", "АВАРИЯ ДКС: ${objectIdToFind[0]} ID:${objectIdToFind[1]}")
                     } else {
                         // Something went wrong while saving the updated object
                         Log.d("AlarmUpdate", "Error saving: " + saveException.message)
@@ -77,6 +78,7 @@ import java.util.Date
 
     fun findDuplicate(resultAfterScan: String): String {
         val className = "FirstClass"
+        var duplicateStatus = "null"
         val query = ParseQuery.getQuery<ParseObject>(className)
         val objectIdToFind = resultAfterScan.split("_").toTypedArray()
         val dksId = objectIdToFind[1].toInt()
@@ -84,13 +86,14 @@ import java.util.Date
         query.getFirstInBackground { parseObject, e ->
             if (parseObject != null) {
                 // The element with the specific DKSId exists
+                 duplicateStatus = "УЖЕ ЕСТЬ В БАЗЕ!"
                 Log.d("MyLog", "QR-код $resultAfterScan УЖЕ ЕСТЬ В БАЗЕ!")
-
                 //todo: сослаться на результат ф-ии Custom Dialog
             } else {
                 if (e.code == ParseException.OBJECT_NOT_FOUND) {
                     // The element with the specific DKSId does not exist
-                    Log.d("ParseQuery", "Элемент занесён!")
+                    "Элемент занесён!".also { duplicateStatus = it }
+                    Log.d("ParseQuery", duplicateStatus)
 
                 } else {
                     // A different error occurred
@@ -98,9 +101,9 @@ import java.util.Date
                 }
             }
         }
-        return "QR-код $resultAfterScan УЖЕ ЕСТЬ В БАЗЕ!"
+        return "QR-код $resultAfterScan $duplicateStatus"
     }
-//TODO дописать сюда ф-ю, которая сканирует qr и возвращает номер группы в виде int
+//сканирует qr и возвращает номер группы в виде int
 fun groupNameFun(resultAfterScan: String): Int {
     val className = "FirstClass"
     val query = ParseQuery.getQuery<ParseObject>(className)

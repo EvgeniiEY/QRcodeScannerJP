@@ -46,9 +46,9 @@ class MainActivity : ComponentActivity() {
             val qrArray = result.contents.split("_").toTypedArray()
 
             resultAfterScanIn = result.contents
-            findDuplicate(resultAfterScanIn)
 
-            Toast.makeText(this, findDuplicate(result.contents), Toast.LENGTH_LONG).show()
+
+            Toast.makeText(this, findDuplicate(resultAfterScanIn), Toast.LENGTH_LONG).show()
             //todo: return result as a dialog
 
 
@@ -95,11 +95,12 @@ class MainActivity : ComponentActivity() {
     ) { result ->
         if (result.contents == null) {
         } else {
-            Toast.makeText(this, "QR код: ${result.contents}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "УСТАНОВЛЕНА АВАРИЯ на QR код: ${result.contents}", Toast.LENGTH_LONG).show()
             resultAfterScanAlarm = result.contents
             //Передаю строку в ф-ю
 
             findAndChange(resultAfterScan = resultAfterScanAlarm)
+//            Toast.makeText(this,"АВАРИЯ ДКС: ${objectIdToFind[0]} ID:${objectIdToFind[1]}",Toast.LENGTH_LONG )
 
         }
     }
